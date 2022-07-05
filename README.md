@@ -1,2 +1,2 @@
 # django-sites
-How to show a post on two slugs?
+How are to show a post on two slugs?
