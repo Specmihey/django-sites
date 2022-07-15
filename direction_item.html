@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ direction_item.title }} | Тайтл или название компании</title>
+<title>{{ direction_item.title }} | Институт красоты «Призвание»</title>
 <meta name="description" content="{{ direction_item.description }}">
 {% endblock meta %}
 
@@ -15,9 +15,10 @@
 <div class="breadcrumb-2">
     <ul class="breadcrumb">
         <li><a href="{% url 'home' %}">Главная</a></li>
-        <li><a href="{% url 'directions_of_cosmetology' %}" id='cat_name' >Направления</a></li>
+        <li><a href="{% url 'directions_of_cosmetology' %}" id='cat_name' >Направления косметологии</a></li>
 
         <li><a href="{% url 'directions_of_cosmetology' %}{{ dir_slug }}/" id='path_name' >{{ title }}</a></li>
+<!--        <li><a href="{% url 'directions_of_cosmetology' %}{{ direction_item_slug }}/" id='path_name' >{{ title }}</a></li>-->
 
         <li class="active">{{ direction_item.title }}</li>
     </ul>
@@ -27,14 +28,14 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-
 {% autoescape off %}
    {{direction_item.content}}
 {% endautoescape %}
+{% endblock content %}
 
 {% block gallery %}
-<div class=""row>
-      {% for p in direction_item.gallery %}
+<div class="row">
+      {% for p in gallery %}
 <div class="col-sm-4">
     <div class="img-box">
         <a data-lightbox="roadtrip" href="{{ p.image.url }}">
@@ -45,13 +46,7 @@
 </div>
     {% endfor %}
 </div>
-
-
 {% endblock gallery %}
-
-
-
-{% endblock content %}
 
   {% block scriptgallery %}
 <!--   подключение галереи   -->
@@ -85,8 +80,5 @@
       'wrapAround': true
     })
 </script>
-<script>
-uri = window.location.pathname.split('/')[2]
-document.getElementById("uri").innerHTML = path_name;
-</script>
+
 {% endblock scriptgallery %}
