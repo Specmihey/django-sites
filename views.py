@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views.generic import ListView, DetailView
-#from django.core.paginator import Paginator
+from django.core.paginator import Paginator
 from directions.models import *
 from blog.views import menu, WorkingHours, social
 
@@ -15,11 +15,11 @@ class directions_of_cosmetology(ListView):
     context_object_name = 'dir_category'  # вместо object_list
     allow_empty = False
     extra_context = {
-        'title': 'Некий тайтл',
-        'description': 'Описание. Подробнее в разделе сайта ...',
-        'WorkingHours': WorkingHours, #часы работы из списка, импортированные из другого приложения
-        'social': social, #ссылки на соцсети из списка, импортированные из другого приложения
-        'menu': menu, # из списка меню
+        'title': 'Направления косметологии',
+        'description': 'Направления косметологии в Ярославле. Подробнее в разделе сайта ...',
+        'WorkingHours': WorkingHours,
+        'social': social,
+        'menu': menu,
     }
 
     def get_queryset(self):
@@ -47,6 +47,7 @@ class cosmetology_by_sections(ListView):
         context['title'] = directionCategory.objects.get(slug=self.kwargs['dir_cat_slug'])
         return context
 
+
 #Вывод одной статьи по двум slugs
 class Get_Direction_Item(DetailView):
         model = directionCosmet
@@ -57,15 +58,21 @@ class Get_Direction_Item(DetailView):
             'WorkingHours': WorkingHours,
             'social': social,
             'menu': menu,
+            #'gallery': gallery,
         }
 
         def get_object(self, *args, **kwargs):
-            return directionCosmet.objects.get(slug=self.kwargs.get('dir_slug'),
-                                           dir_category__slug=self.kwargs.get('dir_cat_slug'))
+            return directionCosmet.objects.get(slug=self.kwargs.get('dir_slug'), dir_category__slug=self.kwargs.get('dir_cat_slug'))
 
 
         def get_context_data(self, *, object_list=None, **kwargs):
             context = super().get_context_data(**kwargs)
             context['title'] = directionCategory.objects.get(slug=self.kwargs['dir_cat_slug'])
             context['dir_slug'] = directionCategory.objects.values().get(slug=self.kwargs['dir_cat_slug'])['slug']
+            direction_item = directionCosmet.objects.get(slug=self.kwargs.get('dir_slug'))
+            context['gallery'] = directionImgGallery.objects.filter(album_id=direction_item) # Вывод галереи
             return context
+
+
+
+
